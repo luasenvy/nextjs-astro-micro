@@ -13,10 +13,10 @@ const posts = [post02, post03, post06, post07, post08]
     ({ date: a }, { date: b }) => new Date(b).getTime() - new Date(a).getTime()
   ) as Array<PostItem>;
 
-export const postsByYear: Map<number, PostItem> = posts.reduce(
-  (map, post) => map.set(new Date(post.date).getFullYear(), post),
-  new Map()
-);
+export const postsByYear: Map<number, Array<PostItem>> = posts.reduce((map, post) => {
+  const year = new Date(post.date).getFullYear();
+  return map.set(year, (map.get(year) ?? []).concat(post));
+}, new Map<number, Array<PostItem>>());
 
 export const postsBySlug: Map<string, PostItem> = posts.reduce(
   (map, post) => map.set(post.slug, post),

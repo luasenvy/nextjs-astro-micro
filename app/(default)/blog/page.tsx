@@ -16,7 +16,7 @@ export default function BlogPage() {
                 <div className="font-semibold text-black dark:text-white">{year}</div>
                 <div>
                   <ul className="not-prose flex flex-col gap-4">
-                    {Array.from(postsByYear.values()).map((post, i) => (
+                    {postsByYear.get(year)?.map((post, i) => (
                       <li key={`post-card-${i}`}>
                         <ArrowCard {...post} />
                       </li>
