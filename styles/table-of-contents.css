@@ -1,0 +1,11 @@
+  summary {
+    @apply cursor-pointer rounded-t-lg px-3 py-1.5 font-medium transition-colors;
+  }
+
+  summary:hover {
+    @apply bg-black/5 dark:bg-white/5;
+  }
+
+  details[open] summary {
+    @apply bg-black/5 dark:bg-white/5;
+  }
