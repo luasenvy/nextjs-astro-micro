@@ -29,7 +29,6 @@
     "@typescript-eslint/parser": "^8.7.0",
     "autoprefixer": "^10.4.20",
     "classnames": "^2.5.1",
-    "clsx": "^2.1.1",
     "disqus-react": "^1.1.5",
     "eslint": "^8",
     "eslint-config-prettier": "^9.1.0",
