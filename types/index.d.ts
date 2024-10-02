@@ -15,18 +15,3 @@ export type Socials = Array<{
   NAME: string;
   HREF: string;
 }>;
-
-export type PostItem = {
-  slug: string;
-  collection: string;
-  title: string;
-  description: string;
-  date: string;
-  content: string;
-  draft: boolean;
-};
-
-export interface ProjectItem extends PostItem {
-  demo: string;
-  repo: string;
-}

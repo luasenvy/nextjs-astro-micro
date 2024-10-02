@@ -1,11 +1,8 @@
 "use client";
 
-import { marked } from "marked";
-import { gfmHeadingId } from "marked-gfm-heading-id";
-
 import { useParams } from "next/navigation";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import BackToPrevious from "@/components/BackToPrevious";
 import Container from "@/components/Container";
@@ -14,11 +11,8 @@ import FormattedDate from "@/components/FormattedDate";
 import PostNavigation from "@/components/PostNavigation";
 import TableOfContents from "@/components/TableOfContents";
 
+import type { Heading } from "@/components/TableOfContentsHeading";
 import posts, { postsBySlug } from "@/lib/data/posts";
-import type { PostItem } from "@/types";
-
-const prefix = "blg-head";
-marked.use(gfmHeadingId({ prefix }));
 
 const readingTime = (html: string) => {
   const textOnly = html.replace(/<[^>]+>/g, "");
@@ -29,26 +23,28 @@ const readingTime = (html: string) => {
 
 export default function PostViewer() {
   const { slug } = useParams();
-  const giscusRef = useRef<HTMLDivElement>(null);
 
-  const post = postsBySlug.get(slug as string) as PostItem;
+  const giscusRef = useRef<HTMLDivElement>(null);
+  const articleRef = useRef<HTMLElement>(null);
+
+  const [toc, setToc] = useState<Array<Heading>>([]);
+
+  const post = useMemo(() => postsBySlug.get(slug as string)!, [postsBySlug, slug]);
 
   const prevPost = useMemo(() => {
-    const index = posts.findIndex(({ slug }) => slug === post.slug);
+    const index = posts.findIndex(({ metadata: { slug } }) => slug === post?.metadata.slug);
     if (index > 0) return posts[index - 1];
   }, [post]);
 
   const nextPost = useMemo(() => {
-    const index = posts.findIndex(({ slug }) => slug === post.slug);
+    const index = posts.findIndex(({ metadata: { slug } }) => slug === post?.metadata.slug);
     if (index < posts.length - 1) return posts[index + 1];
   }, [post]);
 
-  const content = useMemo(() => marked.parse(post.content) as string, [post]);
-
-  const article = useMemo(
+  const PostArticle = useMemo(
     () => (
-      <article className="animate">
-        <div dangerouslySetInnerHTML={{ __html: content }} />
+      <article ref={articleRef} className="animate">
+        {post?.Component && <post.Component />}
         <div className="mt-24">
           <PostNavigation prevPost={prevPost} nextPost={nextPost} />
         </div>
@@ -57,24 +53,24 @@ export default function PostViewer() {
         </div>
       </article>
     ),
-    [content]
+    [post]
   );
 
-  const headings = useMemo(() => {
-    const heads: Array<{ depth: number; slug: string; text: string }> = [];
-    const regex = /<h(\d)[\s>][^<]*<\/h\d>/g;
-    let match;
-    while ((match = regex.exec(content))) {
-      const [, depth] = match;
-      const slug = (match[0].match(/>([^<]+)/)?.[1] || "")
-        .replace(/[^a-zA-Z\s]/g, "")
-        .replace(/\s/g, "-")
-        .toLowerCase();
-      const text = match[0].replace(/<[^>]+>/g, "");
-      heads.push({ depth: Number(depth), slug: `${prefix}${slug}`, text });
-    }
-    return heads;
-  }, [content]);
+  const content = useMemo(() => post?.metadata.content ?? "", [post]);
+
+  useEffect(() => {
+    if (!articleRef.current) return;
+
+    setToc(
+      Array.from(
+        articleRef.current.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]")
+      ).map(({ id, tagName, textContent }) => ({
+        depth: Number(tagName.slice(1)),
+        slug: id,
+        text: textContent!,
+      }))
+    );
+  }, [articleRef]);
 
   useEffect(() => {
     if (!giscusRef.current) return;
@@ -110,17 +106,19 @@ export default function PostViewer() {
       <div className="my-10 space-y-1">
         <div className="animate flex items-center gap-1.5">
           <div className="font-base text-sm">
-            <FormattedDate date={new Date(post.date)} />
+            {post?.metadata.date && <FormattedDate date={new Date(post.metadata.date)} />}
           </div>
           &bull;
           <div className="font-base text-sm">{readingTime(content)}</div>
         </div>
-        <h1 className="animate text-3xl font-semibold text-black dark:text-white">{post.title}</h1>
+        <h1 className="animate text-3xl font-semibold text-black dark:text-white">
+          {post.metadata.title}
+        </h1>
       </div>
 
-      {headings.length > 0 && <TableOfContents headings={headings} />}
+      <TableOfContents headings={toc} />
 
-      {article}
+      {PostArticle}
     </Container>
   );
 }

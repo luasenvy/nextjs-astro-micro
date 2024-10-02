@@ -1,4 +1,4 @@
-import "styles/callout.scss";
+import "@/styles/callout.css";
 
 interface CalloutProps {
   type: "default" | "info" | "warning" | "error";

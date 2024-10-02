@@ -1,24 +1,18 @@
 "use client";
 
-import { marked } from "marked";
-import { gfmHeadingId } from "marked-gfm-heading-id";
-
 import { useParams } from "next/navigation";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import BackToPrevious from "@/components/BackToPrevious";
 import Container from "@/components/Container";
 import FormattedDate from "@/components/FormattedDate";
+
 import Link from "@/components/Link";
 import TableOfContents from "@/components/TableOfContents";
 
 import type { Heading } from "@/components/TableOfContentsHeading";
 import { projectsBySlug } from "@/lib/data/projects";
-import type { ProjectItem } from "@/types";
-
-const prefix = "prj-head";
-marked.use(gfmHeadingId({ prefix }));
 
 const readingTime = (html: string) => {
   const textOnly = html.replace(/<[^>]+>/g, "");
@@ -30,33 +24,36 @@ const readingTime = (html: string) => {
 export default function ProjectViewer() {
   const { slug } = useParams();
 
-  const project = useMemo(
-    () => projectsBySlug.get(slug as string) as ProjectItem,
-    [projectsBySlug, slug]
+  const articleRef = useRef<HTMLElement>(null);
+
+  const [toc, setToc] = useState<Array<Heading>>([]);
+
+  const project = useMemo(() => projectsBySlug.get(slug as string)!, [projectsBySlug, slug]);
+
+  const ProjectArticle = useMemo(
+    () => (
+      <article ref={articleRef} className="animate">
+        {project?.Component && <project.Component />}
+      </article>
+    ),
+    [project]
   );
 
-  const content = useMemo(() => marked.parse(project.content) as string, [project]);
+  const content = useMemo(() => project?.metadata.content ?? "", [project]);
 
-  const article = useMemo(
-    () => <article className="animate" dangerouslySetInnerHTML={{ __html: content }} />,
-    [content]
-  );
+  useEffect(() => {
+    if (!articleRef.current) return;
 
-  const headings = useMemo(() => {
-    const heads: Array<Heading> = [];
-    const regex = /<h(\d)[\s>][^<]*<\/h\d>/g;
-    let match;
-    while ((match = regex.exec(content))) {
-      const [, depth] = match;
-      const slug = (match[0].match(/>([^<]+)/)?.[1] || "")
-        .replace(/[^a-zA-Z\s]/g, "")
-        .replace(/\s/g, "-")
-        .toLowerCase();
-      const text = match[0].replace(/<[^>]+>/g, "");
-      heads.push({ depth: Number(depth), slug: `${prefix}${slug}`, text });
-    }
-    return heads;
-  }, [content]);
+    setToc(
+      Array.from(
+        articleRef.current.querySelectorAll("h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]")
+      ).map(({ id, tagName, textContent }) => ({
+        depth: Number(tagName.slice(1)),
+        slug: id,
+        text: textContent!,
+      }))
+    );
+  }, [articleRef]);
 
   return (
     <Container>
@@ -66,12 +63,14 @@ export default function ProjectViewer() {
       <div className="animate my-10 space-y-1">
         <div className="flex items-center gap-1.5">
           <div className="font-base text-sm">
-            <FormattedDate date={new Date(project.date)} />
+            {project?.metadata.date && <FormattedDate date={new Date(project.metadata.date)} />}
           </div>
           &bull;
-          <div className="font-base text-sm">{readingTime(project.content)}</div>
+          <div className="font-base text-sm">{readingTime(content)}</div>
         </div>
-        <h1 className="text-3xl font-semibold text-black dark:text-white">{project.title}</h1>
+        <h1 className="text-3xl font-semibold text-black dark:text-white">
+          {project.metadata.title}
+        </h1>
         {(project.demo || project.repo) && (
           <nav className="flex gap-1">
             {project.demo && (
@@ -89,9 +88,9 @@ export default function ProjectViewer() {
         )}
       </div>
 
-      <TableOfContents headings={headings} />
+      <TableOfContents headings={toc} />
 
-      {article}
+      {ProjectArticle}
     </Container>
   );
 }

@@ -1,7 +1,9 @@
 import Link from "@/components/Link";
-import type { PostItem } from "@/types";
+import type { PostItem } from "@/lib/data/posts";
 
-export default function ArrowCard({ title, description, slug, collection }: PostItem) {
+export default function ArrowCard({ metadata }: PostItem) {
+  const { title, description, slug, collection } = metadata;
+
   return (
     <Link
       href={`/${collection}/${slug}`}

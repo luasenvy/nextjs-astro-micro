@@ -1,6 +1,5 @@
 import Link from "@/components/Link";
-
-import type { PostItem } from "@/types";
+import type { PostItem } from "@/lib/data/posts";
 
 interface PostNavigation {
   prevPost?: PostItem;
@@ -12,7 +11,7 @@ export default function PostNavigation({ prevPost, nextPost }: PostNavigation) {
     <div className="grid grid-cols-2 gap-1.5 sm:gap-3">
       {prevPost ? (
         <Link
-          href={`/blog/${prevPost.slug}`}
+          href={`/blog/${prevPost.metadata.slug}`}
           className="group relative flex flex-nowrap rounded-lg border border-black/15 px-4 py-3 pl-10 no-underline transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
         >
           <svg
@@ -32,7 +31,7 @@ export default function PostNavigation({ prevPost, nextPost }: PostNavigation) {
               className="translate-x-1 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-focus-visible:translate-x-0"
             />
           </svg>
-          <div className="flex items-center text-sm">{prevPost.title}</div>
+          <div className="flex items-center text-sm">{prevPost.metadata.title}</div>
         </Link>
       ) : (
         <div className="invisible"></div>
@@ -40,7 +39,7 @@ export default function PostNavigation({ prevPost, nextPost }: PostNavigation) {
 
       {nextPost ? (
         <Link
-          href={`/blog/${nextPost.slug}`}
+          href={`/blog/${nextPost.metadata.slug}`}
           className="group relative flex flex-grow flex-row-reverse flex-nowrap rounded-lg border border-black/15 px-4 py-4 pr-10 no-underline transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
         >
           <svg
@@ -60,7 +59,7 @@ export default function PostNavigation({ prevPost, nextPost }: PostNavigation) {
               className="-translate-x-1 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-focus-visible:translate-x-0"
             />
           </svg>
-          <div className="flex items-center text-sm">{nextPost.title}</div>
+          <div className="flex items-center text-sm">{nextPost.metadata.title}</div>
         </Link>
       ) : (
         <div className="invisible"></div>

@@ -1,43 +1,41 @@
-import type { PostItem } from "@/types";
+---
+title: "Getting started"
+description: "Hit the ground running."
+date: "2024-03-22"
+collection: "blog"
+---
 
-export default {
-  title: "Getting started",
-  description: "Hit the ground running.",
-  date: "2024-03-22",
-  collection: "blog",
-  draft: false,
-  slug: "getting-started",
-  content: `---
+---
 
 ## Install astro-micro
 
 Clone the [Astro Micro repository](https://github.com/trevortylerlee/astro-micro.git).
 
-\`\`\`sh
+```sh
 git clone https://github.com/trevortylerlee/astro-micro.git my-astro-micro
-\`\`\`
+```
 
-\`\`\`sh
+```sh
 cd my-astro-micro
-\`\`\`
+```
 
-\`\`\`sh
+```sh
 npm i
-\`\`\`
+```
 
-\`\`\`sh
+```sh
 npm run build
-\`\`\`
+```
 
-\`\`\`sh
+```sh
 npm run dev
-\`\`\`
+```
 
 ## Customize the website metadata
 
-To change the website metadata, edit \`src/consts.ts\`.
+To change the website metadata, edit `src/consts.ts`.
 
-\`\`\`ts
+```ts
 // src/consts.ts
 
 export const SITE: Site = {
@@ -47,7 +45,7 @@ export const SITE: Site = {
   NUM_POSTS_ON_HOMEPAGE: 3,
   NUM_PROJECTS_ON_HOMEPAGE: 3,
 };
-\`\`\`
+```
 
 | Field        | Req | Description                                          |
 | :----------- | :-- | :--------------------------------------------------- |
@@ -61,14 +59,14 @@ export const SITE: Site = {
 
 ## Customize metadata for individual pages
 
-\`\`\`ts
+```ts
 // src/consts.ts
 
 export const ABOUT: Metadata = {
   TITLE: "About",
   DESCRIPTION: "Astro Micro is a fork of Astro Nano.",
 };
-\`\`\`
+```
 
 | Field       | Req | Description                                    |
 | :---------- | :-- | :--------------------------------------------- |
@@ -79,7 +77,7 @@ export const ABOUT: Metadata = {
 
 ## Add your social media links
 
-\`\`\`ts
+```ts
 // src/consts.ts
 
 export const SOCIALS: Socials = [
@@ -96,7 +94,7 @@ export const SOCIALS: Socials = [
     HREF: "https://www.linkedin.com/in/trevortylerlee",
   },
 ];
-\`\`\`
+```
 
 | Field | Req | Description                             |
 | :---- | :-- | :-------------------------------------- |
@@ -107,7 +105,7 @@ export const SOCIALS: Socials = [
 
 To set up RSS and Giscus, it's easier if the site is deployed and has a URL for you to use. Instantly deploy to Vercel or Netlify by clicking the buttons below.
 
-<div class="flex gap-2">
+<div className="flex gap-2">
   <a target="_blank" aria-label="Deploy with Vercel" href="https://vercel.com/new/clone?repository-url=https://github.com/trevortylerlee/astro-micro">
     <img src="/deploy_vercel.svg" />
   </a>
@@ -120,9 +118,9 @@ To deploy manually see [Astro's docs](https://docs.astro.build/en/guides/deploy/
 
 ## Set up RSS
 
-Change the \`site\` option to the deployed site's URL.
+Change the `site` option to the deployed site's URL.
 
-\`\`\`js
+```js
 // astro.config.mjs
 
 export default defineConfig({
@@ -134,13 +132,13 @@ export default defineConfig({
     },
   },
 });
-\`\`\`
+```
 
 ## Set up Giscus
 
-Follow the steps at [giscus.app](https://giscus.app). Once you get your  custom Giscus script from that site, go to \`Giscus.astro\` and replace that script with your own.
+Follow the steps at [giscus.app](https://giscus.app). Once you get your  custom Giscus script from that site, go to `Giscus.astro` and replace that script with your own.
 
-\`\`\`js
+```js
 // src/components/Giscus.astro
 
 <script
@@ -161,11 +159,11 @@ Follow the steps at [giscus.app](https://giscus.app). Once you get your  custom 
   crossorigin="anonymous"
   async></script>
 
-\`\`\`
+```
 
-To change the Giscus themes used, edit the \`setGiscusTheme\` function in \`Head.astro\`.
+To change the Giscus themes used, edit the `setGiscusTheme` function in `Head.astro`.
 
-\`\`\`js
+```js
 // src/components/Head.astro
 
 const setGiscusTheme = () => {
@@ -180,5 +178,4 @@ const setGiscusTheme = () => {
     giscus.src = url.toString();
   }
 };
-\`\`\``,
-} satisfies PostItem;
+```

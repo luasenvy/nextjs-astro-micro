@@ -1,15 +1,13 @@
-import type { ProjectItem } from "@/types";
+---
+title: "Astro Micro"
+description: "Astro Micro is an accessible and lightweight blog."
+date: "2024-05-26"
+collection: "projects"
+demoURL: "https://astro-micro.vercel.app"
+repoURL: "https://github.com/trevortylerlee/astro-micro"
+---
 
-export default {
-  title: "Astro Micro",
-  description: "Astro Micro is an accessible and lightweight blog.",
-  date: "2024-05-26",
-  draft: false,
-  slug: "astro-micro",
-  collection: "projects",
-  demo: "https://astro-micro.vercel.app",
-  repo: "https://github.com/trevortylerlee/astro-micro",
-  content: `![Astro Micro](/astro-micro.jpg)
+![Astro Micro](/astro-micro.jpg)
 
 Astro Micro is an accessible theme for Astro. It's a fork of Mark Horn's popular theme Astro Nano. Like Nano, Micro comes with zero frameworks installed.
 
@@ -21,7 +19,7 @@ Visit [Astro Micro on Github](https://github.com/trevortylerlee/astro-micro) to 
 
 ## 🚀 Deploy your own
 
-<div class="flex gap-2">
+<div className="flex gap-2">
   <a target="_blank" aria-label="Deploy with Vercel" href="https://vercel.com/new/clone?repository-url=https://github.com/trevortylerlee/astro-micro">
     <img src="/deploy_vercel.svg" />
   </a>
@@ -45,5 +43,4 @@ and [more](/blog/00-micro-changelog).
 
 ## 💯 Lighthouse score
 
-![Astro Nano Lighthouse Score](/astro-nano-lighthouse.jpg)`,
-} satisfies ProjectItem;
+![Astro Nano Lighthouse Score](/astro-nano-lighthouse.jpg)
