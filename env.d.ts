@@ -13,9 +13,3 @@ declare module "*.mdx" {
 
   export const metadata: Metadata;
 }
-
-declare module "*.md" {
-  export default React.ComponentType;
-
-  export const metadata: Metadata;
-}
