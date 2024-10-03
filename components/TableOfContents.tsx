@@ -1,5 +1,8 @@
 import "@/styles/table-of-contents.css";
 
+import classnames from "classnames";
+import type { HTMLAttributes } from "react";
+
 import TableOfContentsHeading, { type Heading } from "@/components/TableOfContentsHeading";
 
 const buildToc = (headings: Array<Heading>) => {
@@ -15,15 +18,22 @@ const buildToc = (headings: Array<Heading>) => {
   return toc;
 };
 
-export interface TableOfContentsProps {
+export interface TableOfContentsProps extends HTMLAttributes<HTMLDetailsElement> {
   headings: Array<Heading>;
 }
 
-export default function TableOfContents({ headings }: TableOfContentsProps) {
+export default function TableOfContents({ headings, className, ...props }: TableOfContentsProps) {
   const toc = buildToc(headings);
 
   return (
-    <details open className="animate rounded-lg border border-black/15 dark:border-white/20">
+    <details
+      open
+      className={classnames(
+        "animate rounded-lg border border-black/15 dark:border-white/20",
+        className
+      )}
+      {...props}
+    >
       <summary>Table of Contents</summary>
       <nav>
         <ul className="py-3">

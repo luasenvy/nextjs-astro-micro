@@ -1,5 +1,6 @@
 "use client";
 
+import classnames from "classnames";
 import { useParams } from "next/navigation";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -116,7 +117,7 @@ export default function PostViewer() {
         </h1>
       </div>
 
-      <TableOfContents headings={toc} />
+      <TableOfContents headings={toc} className={classnames({ hidden: !Boolean(toc.length) })} />
 
       {PostArticle}
     </Container>
