@@ -2,14 +2,14 @@
 
 import Link, { type LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
-import type { AnchorHTMLAttributes } from "react";
+import { type AnchorHTMLAttributes, forwardRef } from "react";
 
 export type ViewTransitionLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & LinkProps;
 
-export default function ViewTransitionLink({
-  onClick: handleClick,
-  ...props
-}: ViewTransitionLinkProps) {
+export default forwardRef(function ViewTransitionLink(
+  { onClick: handleClick, ...props }: ViewTransitionLinkProps,
+  ref: React.Ref<HTMLAnchorElement>
+) {
   const router = useRouter();
 
   const handleTransition = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -26,5 +26,5 @@ export default function ViewTransitionLink({
     }
   };
 
-  return <Link {...props} onClick={handleTransition} />;
-}
+  return <Link ref={ref} {...props} onClick={handleTransition} />;
+});
