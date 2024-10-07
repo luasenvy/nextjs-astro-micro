@@ -5,6 +5,8 @@ declare module "*.mdx" {
     slug: string;
     title: string;
     subtitle: string;
+    description: string;
+    collection: string;
     image: string;
     author: string;
     date: string;

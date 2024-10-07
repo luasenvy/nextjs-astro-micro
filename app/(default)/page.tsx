@@ -2,20 +2,13 @@ import ArrowCard from "@/components/ArrowCard";
 import Container from "@/components/Container";
 import Link from "@/components/Link";
 
-import { HOME, SITE, SOCIALS } from "@/lib/config";
+import { SITE, SOCIALS } from "@/lib/config";
 
 import posts from "@/lib/data/posts";
 import projects from "@/lib/data/projects";
 
-const homepagePosts = posts
-  .filter(({ draft }) => !draft)
-  .sort(({ date: a }, { date: b }) => new Date(b).getTime() - new Date(a).getTime())
-  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
-
-const homepageProjects = projects
-  .filter((project) => !project.draft)
-  .sort(({ date: a }, { date: b }) => new Date(b).getTime() - new Date(a).getTime())
-  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
+const homepagePosts = posts.slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
+const homepageProjects = projects.slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
 
 export default function HomePage() {
   return (
