@@ -1,9 +1,7 @@
 import classnames from "classnames";
 
-// import NextLink from "next/link";
+import NextLink from "next/link";
 import { twMerge } from "tailwind-merge";
-
-import ViewTracksitionLink from "@/components/ViewTransitionLink";
 
 export interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
   href: string;
@@ -21,7 +19,7 @@ export default function Link({
   ...props
 }: LinkProps) {
   return (
-    <ViewTracksitionLink
+    <NextLink
       href={href}
       target={external ? "_blank" : undefined}
       className={twMerge(
@@ -33,6 +31,6 @@ export default function Link({
       {...props}
     >
       {children}
-    </ViewTracksitionLink>
+    </NextLink>
   );
 }
